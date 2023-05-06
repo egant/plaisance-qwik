@@ -5,23 +5,15 @@ interface Props {
 }
 
 export default component$(({ activeSection }: Props) => {
-	const winIsAMixtureSection = useSignal<Element>();
-	const slideUp = useSignal('');
-	useVisibleTask$(() => {
-		activeSection.value = 'winIsAMixture';
+	const classTransition = useSignal('');
+	useVisibleTask$(({ track }) => {
+		track(() => activeSection.value);
 		if (activeSection.value === 'winIsAMixture') {
-			slideUp.value = 'slide-up';
-		} else {
-			slideUp.value = '';
+			classTransition.value = 'slide-up';
 		}
 	});
-
 	return (
-		<section
-			ref={winIsAMixtureSection}
-			id="winIsAMixture"
-			class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black"
-		>
+		<section class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black">
 			<div
 				class="banner-bg absolute inset-0 h-screen scale-125"
 				x-intersect:enter="addClass('zoom-out');"
@@ -105,18 +97,18 @@ export default component$(({ activeSection }: Props) => {
 			<div class="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-8">
 				<div class="overflow-hidden">
 					<h2
-						class={`hero-title opacity-0 ${slideUp.value}`}
+						id="winIsAMixture"
+						class={`hero-title section-content opacity-0 ${classTransition.value}`}
 						style="animation-delay: 200ms"
-						// x-intersect:leave="removeClass('slide-up')"
 					>
 						WINE IS A MIXTURE
 					</h2>
 				</div>
 				<div class="mt-4 overflow-hidden">
 					<h2
-						class={`hero-title opacity-0 delay-200 ${slideUp.value}`}
+						id="winIsAMixture"
+						class={`hero-title section-content opacity-0 delay-200 ${classTransition.value}`}
 						style="animation-delay: 400ms"
-						x-intersect:leave="removeClass('slide-up')"
 					>
 						OF HUMOR AND LIGHT.
 					</h2>

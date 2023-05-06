@@ -5,22 +5,15 @@ interface Props {
 }
 
 export default component$(({ activeSection }: Props) => {
-	const traditionSection = useSignal<Element>();
-	const slideUp = useSignal('');
-	useVisibleTask$(() => {
-		activeSection.value = 'tradition';
+	const classTransition = useSignal('');
+	useVisibleTask$(({ track }) => {
+		track(() => activeSection.value);
 		if (activeSection.value === 'tradition') {
-			slideUp.value = 'slide-up';
-		} else {
-			slideUp.value = '';
+			classTransition.value = 'slide-up';
 		}
 	});
 	return (
-		<section
-			id="tradition"
-			ref={traditionSection}
-			class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black"
-		>
+		<section class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black">
 			<div
 				class="banner-bg absolute inset-0 scale-125"
 				x-ref="bgImageTrandition"
@@ -107,7 +100,8 @@ export default component$(({ activeSection }: Props) => {
 			<div class="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-8 text-center">
 				<div class="overflow-hidden">
 					<h2
-						class={`hero-title opacity-0 ${slideUp.value}`}
+						id="tradition"
+						class={`hero-title section-content opacity-0 ${classTransition.value}`}
 						x-intersect:enter="addClass('slide-up');addClass('zoom-out', $refs.bgImageTrandition);"
 						x-intersect:leave="removeClass('slide-up');"
 					>
@@ -115,7 +109,8 @@ export default component$(({ activeSection }: Props) => {
 					</h2>
 				</div>
 				<p
-					class={`mx-auto mt-4 max-w-sm text-center text-lg text-white opacity-0 sm:text-2xl lg:max-w-xl ${slideUp.value}`}
+					id="tradition"
+					class={`section-content mx-auto mt-4 max-w-sm text-center text-lg text-white opacity-0 sm:text-2xl lg:max-w-xl ${classTransition.value}`}
 					style="animation-delay: 400ms"
 					x-intersect:enter="addClass('slide-up')"
 					x-intersect:leave="removeClass('slide-up')"

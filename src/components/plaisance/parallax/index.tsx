@@ -1,4 +1,4 @@
-import { component$, useSignal } from '@builder.io/qwik';
+import { $, component$, useSignal, useOnDocument } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
 import FlavorsSection from './flavors';
 import IdentitySection from './identity';
@@ -7,8 +7,42 @@ import WinInMixtureSection from './win-in-mixture';
 
 export default component$(() => {
 	const activeSection = useSignal('winIsAMixture');
+	useOnDocument(
+		'scroll',
+		$(() => {
+			const observer = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((entry) => {
+						const sectionContent = entry.target.querySelectorAll('.section-content');
+
+						if (entry.isIntersecting) {
+							sectionContent.forEach((element) => {
+								console.log('Enter', element?.id);
+								activeSection.value = element?.id || '';
+								element.classList.add('slide-up');
+							});
+							return;
+						}
+						sectionContent.forEach((element) => {
+							console.log('Leave', element?.id);
+							element.classList.remove('slide-up');
+						});
+					});
+				},
+				{
+					root: null,
+					threshold: 0.1,
+				}
+			);
+			const sections = document.querySelectorAll('section');
+			sections.forEach(function (v, i) {
+				observer.observe(sections[i]);
+			});
+		})
+	);
+
 	return (
-		<div class="relative h-[400vh]">
+		<div id="paralax" class="relative h-[400vh]">
 			<WinInMixtureSection activeSection={activeSection} />
 			<TraditionSection activeSection={activeSection} />
 			<IdentitySection activeSection={activeSection} />

@@ -5,20 +5,15 @@ interface Props {
 }
 
 export default component$(({ activeSection }: Props) => {
-	const slideUp = useSignal('');
-	useVisibleTask$(() => {
-		activeSection.value = 'identity';
+	const classTransition = useSignal('');
+	useVisibleTask$(({ track }) => {
+		track(() => activeSection.value);
 		if (activeSection.value === 'identity') {
-			slideUp.value = 'slide-up';
-		} else {
-			slideUp.value = '';
+			classTransition.value = 'slide-up';
 		}
 	});
 	return (
-		<section
-			id="identity"
-			class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black"
-		>
+		<section class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black">
 			<div
 				class="banner-bg absolute inset-0 scale-125"
 				x-intersect:enter="addClass('zoom-out')"
@@ -104,17 +99,14 @@ export default component$(({ activeSection }: Props) => {
 			<div class="absolute inset-0 bg-black/60"></div>
 			<div class="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-8 text-center">
 				<div class="overflow-hidden">
-					<h2
-						class={`hero-title opacity-0 ${slideUp.value}`}
-						x-intersect:leave="removeClass('slide-up')"
-					>
+					<h2 id="identity" class={`hero-title section-content opacity-0 ${classTransition.value}`}>
 						IDENTITY
 					</h2>
 				</div>
 				<p
-					class={`mx-auto mt-4 max-w-sm text-center text-lg text-white opacity-0 sm:text-2xl lg:max-w-xl ${slideUp.value}`}
+					id="identity"
+					class={`section-content mx-auto mt-4 max-w-sm text-center text-lg text-white opacity-0 sm:text-2xl lg:max-w-xl ${classTransition.value}`}
 					style="animation-delay: 400ms"
-					x-intersect:leave="removeClass('slide-up')"
 				>
 					In the charming village of Saint-Emilion, named for an 8th-century monk whose following
 					began wine production within the village, wine is still an important part of everyday
