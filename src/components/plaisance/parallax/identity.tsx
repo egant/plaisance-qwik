@@ -5,20 +5,18 @@ interface Props {
 }
 
 export default component$(({ activeSection }: Props) => {
-	const classTransition = useSignal('');
+	const slideTransition = useSignal('');
+	const bannerTransition = useSignal('');
 	useVisibleTask$(({ track }) => {
 		track(() => activeSection.value);
 		if (activeSection.value === 'identity') {
-			classTransition.value = 'slide-up';
+			slideTransition.value = 'slide-up';
+			bannerTransition.value = 'zoom-out';
 		}
 	});
 	return (
 		<section class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black">
-			<div
-				class="banner-bg absolute inset-0 scale-125"
-				x-intersect:enter="addClass('zoom-out')"
-				x-intersect:leave="removeClass('zoom-out');"
-			>
+			<div class={`banner-bg absolute inset-0 scale-125 ${bannerTransition.value}`}>
 				<picture>
 					<source
 						media="(max-width: 640px)"
@@ -99,13 +97,13 @@ export default component$(({ activeSection }: Props) => {
 			<div class="absolute inset-0 bg-black/60"></div>
 			<div class="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-8 text-center">
 				<div class="overflow-hidden">
-					<h2 id="identity" class={`hero-title section-content opacity-0 ${classTransition.value}`}>
+					<h2 id="identity" class={`hero-title section-content opacity-0 ${slideTransition.value}`}>
 						IDENTITY
 					</h2>
 				</div>
 				<p
 					id="identity"
-					class={`section-content mx-auto mt-4 max-w-sm text-center text-lg text-white opacity-0 sm:text-2xl lg:max-w-xl ${classTransition.value}`}
+					class={`section-content mx-auto mt-4 max-w-sm text-center text-lg text-white opacity-0 sm:text-2xl lg:max-w-xl ${slideTransition.value}`}
 					style="animation-delay: 400ms"
 				>
 					In the charming village of Saint-Emilion, named for an 8th-century monk whose following

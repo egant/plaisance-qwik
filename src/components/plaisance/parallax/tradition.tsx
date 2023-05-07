@@ -5,20 +5,18 @@ interface Props {
 }
 
 export default component$(({ activeSection }: Props) => {
-	const classTransition = useSignal('');
+	const slideTransition = useSignal('');
+	const bannerTransition = useSignal('');
 	useVisibleTask$(({ track }) => {
 		track(() => activeSection.value);
 		if (activeSection.value === 'tradition') {
-			classTransition.value = 'slide-up';
+			slideTransition.value = 'slide-up';
+			bannerTransition.value = 'zoom-out';
 		}
 	});
 	return (
 		<section class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black">
-			<div
-				class="banner-bg absolute inset-0 scale-125"
-				x-ref="bgImageTrandition"
-				x-intersect:leave="removeClass('zoom-out', $refs.bgImageTrandition)"
-			>
+			<div class={`banner-bg absolute inset-0 scale-125 ${bannerTransition.value}`}>
 				<picture>
 					<source
 						media="(max-width: 640px)"
@@ -101,19 +99,15 @@ export default component$(({ activeSection }: Props) => {
 				<div class="overflow-hidden">
 					<h2
 						id="tradition"
-						class={`hero-title section-content opacity-0 ${classTransition.value}`}
-						x-intersect:enter="addClass('slide-up');addClass('zoom-out', $refs.bgImageTrandition);"
-						x-intersect:leave="removeClass('slide-up');"
+						class={`hero-title section-content opacity-0 ${slideTransition.value}`}
 					>
 						TRADITION
 					</h2>
 				</div>
 				<p
 					id="tradition"
-					class={`section-content mx-auto mt-4 max-w-sm text-center text-lg text-white opacity-0 sm:text-2xl lg:max-w-xl ${classTransition.value}`}
+					class={`section-content mx-auto mt-4 max-w-sm text-center text-lg text-white opacity-0 sm:text-2xl lg:max-w-xl ${slideTransition.value}`}
 					style="animation-delay: 400ms"
-					x-intersect:enter="addClass('slide-up')"
-					x-intersect:leave="removeClass('slide-up')"
 				>
 					Here in the heart of the Saint-Emilion appellation of Bordeaux, known as the world capital
 					of fine wine, our family works the land just like the generations of winemakers that came

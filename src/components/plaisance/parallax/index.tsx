@@ -14,8 +14,9 @@ export default component$(() => {
 				(entries) => {
 					entries.forEach((entry) => {
 						const sectionContent = entry.target.querySelectorAll('.section-content');
-
+						const banner = entry.target.querySelector('.banner-bg');
 						if (entry.isIntersecting) {
+							banner?.classList.add('zoom-out');
 							sectionContent.forEach((element) => {
 								console.log('Enter', element?.id);
 								activeSection.value = element?.id || '';
@@ -23,6 +24,7 @@ export default component$(() => {
 							});
 							return;
 						}
+						banner?.classList.remove('zoom-out');
 						sectionContent.forEach((element) => {
 							console.log('Leave', element?.id);
 							element.classList.remove('slide-up');

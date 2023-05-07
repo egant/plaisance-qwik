@@ -5,19 +5,19 @@ interface Props {
 }
 
 export default component$(({ activeSection }: Props) => {
-	const classTransition = useSignal('');
+	const slideTransition = useSignal('');
+	const bannerTransition = useSignal('');
 	useVisibleTask$(({ track }) => {
 		track(() => activeSection.value);
 		if (activeSection.value === 'flavors') {
-			classTransition.value = 'slide-up';
+			slideTransition.value = 'slide-up';
+			bannerTransition.value = 'zoom-out';
 		}
 	});
 	return (
 		<section class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black">
 			<div
-				class="banner-bg absolute inset-0 scale-125 overflow-hidden bg-cover bg-fixed bg-center bg-no-repeat"
-				x-intersect:enter="addClass('zoom-out')"
-				x-intersect:leave="removeClass('zoom-out')"
+				class={`banner-bg absolute inset-0 scale-125 overflow-hidden bg-cover bg-fixed bg-center bg-no-repeat ${bannerTransition.value}`}
 			>
 				<picture>
 					<source
@@ -103,14 +103,14 @@ export default component$(({ activeSection }: Props) => {
 			>
 				<div class="overflow-hidden">
 					<h2
-						class={`hero-title section-content opacity-0 ${classTransition.value}`}
+						class={`hero-title section-content opacity-0 ${slideTransition.value}`}
 						x-intersect:leave="removeClass('slide-up');"
 					>
 						EXPERIENCE
 					</h2>
 				</div>
 				<p
-					class={`section-content mx-auto mt-4 max-w-sm text-center text-lg text-white opacity-0 sm:text-2xl lg:max-w-xl ${classTransition.value}`}
+					class={`section-content mx-auto mt-4 max-w-sm text-center text-lg text-white opacity-0 sm:text-2xl lg:max-w-xl ${slideTransition.value}`}
 					style="animation-delay: 400ms"
 					x-intersect:leave="removeClass('slide-up')"
 				>

@@ -5,20 +5,18 @@ interface Props {
 }
 
 export default component$(({ activeSection }: Props) => {
-	const classTransition = useSignal('');
+	const slideTransition = useSignal('');
+	const bannerTransition = useSignal('');
 	useVisibleTask$(({ track }) => {
 		track(() => activeSection.value);
 		if (activeSection.value === 'winIsAMixture') {
-			classTransition.value = 'slide-up';
+			slideTransition.value = 'slide-up';
+			bannerTransition.value = 'zoom-out';
 		}
 	});
 	return (
 		<section class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black">
-			<div
-				class="banner-bg absolute inset-0 h-screen scale-125"
-				x-intersect:enter="addClass('zoom-out');"
-				x-intersect:leave="removeClass('zoom-out');"
-			>
+			<div class={`banner-bg absolute inset-0 h-screen scale-125 ${bannerTransition.value}`}>
 				<picture>
 					<source
 						media="(max-width: 640px)"
@@ -98,7 +96,7 @@ export default component$(({ activeSection }: Props) => {
 				<div class="overflow-hidden">
 					<h2
 						id="winIsAMixture"
-						class={`hero-title section-content opacity-0 ${classTransition.value}`}
+						class={`hero-title section-content opacity-0 ${slideTransition.value}`}
 						style="animation-delay: 200ms"
 					>
 						WINE IS A MIXTURE
@@ -107,7 +105,7 @@ export default component$(({ activeSection }: Props) => {
 				<div class="mt-4 overflow-hidden">
 					<h2
 						id="winIsAMixture"
-						class={`hero-title section-content opacity-0 delay-200 ${classTransition.value}`}
+						class={`hero-title section-content opacity-0 delay-200 ${slideTransition.value}`}
 						style="animation-delay: 400ms"
 					>
 						OF HUMOR AND LIGHT.
