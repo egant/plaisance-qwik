@@ -1,72 +1,77 @@
-import { Signal, component$ } from '@builder.io/qwik';
+import { Signal, component$, useTask$ } from '@builder.io/qwik';
 import { Link, useLocation } from '@builder.io/qwik-city';
-import { useCSSTransition } from 'qwik-transition';
-import { TRANSITION_CONFIGS_APPEAR } from '~/constants';
-
+import { isServer } from '@builder.io/qwik/build';
+import { enter, leave } from '~/utils/el-transition';
 interface OverlayNavProps {
 	isShowMenu: Signal<boolean>;
 }
 
-const getStageTransitionInit = (stage: Signal<string>) => {
-	return stage.value === 'enterFrom'
-		? 'translate-y-full'
-		: stage.value === 'enterTo'
-		? 'translate-y-0'
-		: stage.value === 'leaveFrom'
-		? 'translate-y-0 delay-500'
-		: stage.value === 'leaveTo'
-		? 'translate-y-full '
-		: '';
+const STAGE_TRANSITION = {
+	'data-transition-enter-start': 'translate-y-full',
+	'data-transition-enter-end': 'translate-y-0',
+	'data-transition-leave': 'delay-500',
+	'data-transition-leave-start': 'translate-y-0',
+	'data-transition-leave-end': '-translate-y-full',
 };
 
-const getStageTransition = (stage: Signal<string>) => {
-	return stage.value === 'enterFrom'
-		? 'translate-y-full delay-500'
-		: stage.value === 'enterTo'
-		? 'translate-y-0'
-		: stage.value === 'leaveFrom'
-		? 'translate-y-0 delay-75'
-		: stage.value === 'leaveTo'
-		? 'translate-y-full '
-		: '';
+const STAGE_CONTENT_TRANSITION = {
+	'data-transition-enter': 'delay-500',
+	'data-transition-enter-start': 'translate-y-full',
+	'data-transition-enter-end': 'translate-y-0',
+	'data-transition-leave': 'delay-75',
+	'data-transition-leave-start': 'translate-y-0',
+	'data-transition-leave-end': '-translate-y-full',
 };
+
 export default component$(({ isShowMenu }: OverlayNavProps) => {
 	const loc = useLocation();
-	const { stage, shouldMount } = useCSSTransition(isShowMenu, TRANSITION_CONFIGS_APPEAR);
-	const { stage: stageTitle, shouldMount: shouldMountTitle } = useCSSTransition(
-		isShowMenu,
-		TRANSITION_CONFIGS_APPEAR
-	);
-	if (!shouldMount.value) return null;
-	const stageTransition = getStageTransitionInit(stage);
-	const stageTitleTransition = getStageTransition(stageTitle);
+	useTask$(({ track }) => {
+		track(() => isShowMenu.value);
+		if (isServer) return;
+		if (isShowMenu.value) {
+			enter(document.querySelector('#off-canvas-menu'));
+			const menuContent = document.querySelectorAll('.menu-content');
+			menuContent.forEach((element: Element) => {
+				enter(element);
+			});
+		} else {
+			const menuContent = document.querySelectorAll('.menu-content');
+			menuContent.forEach((element: Element) => {
+				leave(element);
+			});
+			leave(document.querySelector('#off-canvas-menu'));
+		}
+	});
 
 	return (
 		<div
-			class={`fixed inset-0 z-20 bg-dark-600 text-white transition duration-500 ease-out ${stageTransition}`}
+			id="off-canvas-menu"
+			{...STAGE_TRANSITION}
+			class={`fixed inset-0 z-20 hidden bg-dark-600 text-white transition duration-500 ease-out`}
 		>
 			<div class="h-full w-full pt-40 lg:flex lg:pt-0">
 				<div class="hidden border-r border-gray-700 lg:block lg:flex-1">
 					<div class="flex h-full flex-col justify-center px-4 font-heading text-white lg:px-8">
 						<div class="relative overflow-hidden">
-							{shouldMountTitle.value && (
-								<h2
-									class={`text-xl leading-[1] transition duration-500 ease-out lg:text-[20vh] ${stageTitleTransition}`}
-								>
-									WINE
-								</h2>
-							)}
+							<h2
+								{...STAGE_CONTENT_TRANSITION}
+								class={`menu-content text-xl leading-[1] transition duration-500 ease-out lg:text-[20vh]`}
+							>
+								WINE
+							</h2>
 						</div>
 						<div class="relative overflow-hidden">
 							<h2
-								class={`text-xl leading-[1] transition duration-500 ease-out lg:text-[20vh] ${stageTransition}`}
+								{...STAGE_CONTENT_TRANSITION}
+								class={`menu-content  text-xl leading-[1] transition duration-500 ease-out lg:text-[20vh]`}
 							>
 								&
 							</h2>
 						</div>
 						<div class="relative overflow-hidden">
 							<h2
-								class={`text-xl leading-[1] transition duration-500 ease-out lg:text-[20vh] ${stageTransition}`}
+								{...STAGE_CONTENT_TRANSITION}
+								class={`menu-content text-xl leading-[1] transition duration-500 ease-out lg:text-[20vh]`}
 							>
 								FOOD
 							</h2>
@@ -93,10 +98,11 @@ export default component$(({ isShowMenu }: OverlayNavProps) => {
 									</picture>
 									<div class="relative overflow-hidden px-5 xs:px-0">
 										<h2
-											class={`relative inline-block font-heading text-[5vh] !leading-none 
+											{...STAGE_CONTENT_TRANSITION}
+											class={`menu-content relative inline-block font-heading text-[5vh] !leading-none 
                         text-white transition-all duration-500 ease-out 
                         group-hover:text-red-700 xs:text-[10vh] lg:text-[9vh]
-                        xl:text-8xl ${stageTransition}`}
+                        xl:text-8xl`}
 										>
 											About
 										</h2>
@@ -121,9 +127,10 @@ export default component$(({ isShowMenu }: OverlayNavProps) => {
 									</picture>
 									<div class="relative overflow-hidden px-5 xs:px-0">
 										<h2
-											class={`relative inline-block font-heading text-[5vh] !leading-none text-white 
+											{...STAGE_CONTENT_TRANSITION}
+											class={`menu-content relative inline-block font-heading text-[5vh] !leading-none text-white 
                       transition-all duration-500 ease-out group-hover:text-red-700 xs:text-[10vh] 
-                      lg:text-[9vh] xl:text-8xl ${stageTransition}`}
+                      lg:text-[9vh] xl:text-8xl`}
 										>
 											News
 										</h2>
@@ -148,9 +155,10 @@ export default component$(({ isShowMenu }: OverlayNavProps) => {
 									</picture>
 									<div class="relative overflow-hidden px-5 xs:px-0">
 										<h2
-											class={`relative inline-block font-heading text-[5vh] !leading-none 
+											{...STAGE_CONTENT_TRANSITION}
+											class={`menu-content relative inline-block font-heading text-[5vh] !leading-none 
                       text-white transition-all duration-500 ease-out 
-                      group-hover:text-red-700 xs:text-[10vh] lg:text-[9vh] xl:text-8xl ${stageTransition}`}
+                      group-hover:text-red-700 xs:text-[10vh] lg:text-[9vh] xl:text-8xl`}
 										>
 											Shop
 										</h2>

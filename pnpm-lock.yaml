@@ -17,8 +17,8 @@ dependencies:
     specifier: ^2.12.6
     version: 2.12.6(graphql@16.6.0)
   qwik-transition:
-    specifier: ^0.0.6
-    version: 0.0.6
+    specifier: 0.0.7
+    version: 0.0.7
   undici:
     specifier: ^5.22.0
     version: 5.22.0
@@ -110,7 +110,7 @@ devDependencies:
     version: 4.2.0(typescript@5.0.4)(vite@4.3.5)
   wrangler:
     specifier: latest
-    version: 2.19.0
+    version: 2.20.0
 
 packages:
   /@alloc/quick-lru@5.2.0:
@@ -7664,10 +7664,10 @@ packages:
       }
     dev: true
 
-  /qwik-transition@0.0.6:
+  /qwik-transition@0.0.7:
     resolution:
       {
-        integrity: sha512-07W1J1OtJavroyrzp7sChU9fETQn1xtqh0TqvOyn+HTs30iCnD8Z7jKwB0XwwljLOv6dtEuZXOXCoHcsFyjs+Q==,
+        integrity: sha512-U1wEJ/RWYuwfuWl8cWToTJASkRogoBGlBKbr/lKhzQYGeLNXk2K7IUXCMtELcUNHEI7J1MyNbjYc5lA6fMbQ8w==,
       }
     dev: false
 
@@ -9061,10 +9061,10 @@ packages:
     engines: { node: '>=0.10.0' }
     dev: true
 
-  /wrangler@2.19.0:
+  /wrangler@2.20.0:
     resolution:
       {
-        integrity: sha512-/XykXkD7dtvBMWq2p84V/aHhkifZA15+HBD7nm/pV62s6MJrJ+DWd1QJB7CF2D7DqknBLxdWpmmZB6YCo0BtMw==,
+        integrity: sha512-UdKJ2LD7qgDxDvll/GkR1HnRP+bcEdqi/HJjDI+7eF4lv9V940jmm3orxCkSEosGyE14q0q6dBRM95+fBI8tdQ==,
       }
     engines: { node: '>=16.13.0' }
     hasBin: true

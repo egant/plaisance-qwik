@@ -1,5 +1,4 @@
 import { $, component$, useSignal, useStore } from '@builder.io/qwik';
-
 import ProductsCarousel from '~/components/plaisance/carousel';
 import CartModal, { type CartStore, type Product } from '~/components/plaisance/cart-modal';
 import Footer from '~/components/plaisance/footer';

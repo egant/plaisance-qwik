@@ -1,4 +1,4 @@
-import { $, component$, useSignal, useOnDocument } from '@builder.io/qwik';
+import { $, component$, useOnDocument, useSignal } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
 import FlavorsSection from './flavors';
 import IdentitySection from './identity';
@@ -18,7 +18,6 @@ export default component$(() => {
 						if (entry.isIntersecting) {
 							banner?.classList.add('zoom-out');
 							sectionContent.forEach((element) => {
-								console.log('Enter', element?.id);
 								activeSection.value = element?.id || '';
 								element.classList.add('slide-up');
 							});
@@ -26,7 +25,6 @@ export default component$(() => {
 						}
 						banner?.classList.remove('zoom-out');
 						sectionContent.forEach((element) => {
-							console.log('Leave', element?.id);
 							element.classList.remove('slide-up');
 						});
 					});
