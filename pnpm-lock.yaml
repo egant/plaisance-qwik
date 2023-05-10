@@ -19,6 +19,9 @@ dependencies:
   qwik-transition:
     specifier: 0.0.7
     version: 0.0.7
+  rolldate:
+    specifier: 3.1.3
+    version: 3.1.3
   undici:
     specifier: ^5.22.0
     version: 5.22.0
@@ -7871,6 +7874,13 @@ packages:
     dependencies:
       glob: 7.2.3
     dev: true
+
+  /rolldate@3.1.3:
+    resolution:
+      {
+        integrity: sha512-xtv7Ef9IXtYLBfIN6st7Rt7d9isBG+gSu+R4vzEzkERdIEoGqCC3hBj85rbpeBU3Cc3B2PFaFVz6Z6C4kMmFlw==,
+      }
+    dev: false
 
   /rollup-plugin-inject@3.0.2:
     resolution:

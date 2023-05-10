@@ -1,7 +1,6 @@
 import { $, component$, useSignal, useStore } from '@builder.io/qwik';
 import ProductsCarousel from '~/components/plaisance/carousel';
 import CartModal, { type CartStore, type Product } from '~/components/plaisance/cart-modal';
-import Footer from '~/components/plaisance/footer';
 import Header from '~/components/plaisance/header';
 import NewsletterForm from '~/components/plaisance/newsletter-form';
 import OffCanvasMenu from '~/components/plaisance/off-canvas-menu';
@@ -56,7 +55,6 @@ export default component$(() => {
 			<ParalaxSections />
 			<ProductsCarousel />
 			<NewsletterForm />
-			<Footer />
 		</div>
 	);
 });

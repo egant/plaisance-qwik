@@ -97,12 +97,10 @@ export default component$(({ activeSection }: Props) => {
 				</picture>
 			</div>
 			<div class="absolute inset-0 bg-black/60"></div>
-			<div
-				id="flavors"
-				class="over absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-8 text-center"
-			>
+			<div class="over absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-8 text-center">
 				<div class="overflow-hidden">
 					<h2
+						id="flavors"
 						class={`hero-title section-content opacity-0 ${slideTransition.value}`}
 						x-intersect:leave="removeClass('slide-up');"
 					>
@@ -110,6 +108,7 @@ export default component$(({ activeSection }: Props) => {
 					</h2>
 				</div>
 				<p
+					id="flavors"
 					class={`section-content mx-auto mt-4 max-w-sm text-center text-lg text-white opacity-0 sm:text-2xl lg:max-w-xl ${slideTransition.value}`}
 					style="animation-delay: 400ms"
 					x-intersect:leave="removeClass('slide-up')"

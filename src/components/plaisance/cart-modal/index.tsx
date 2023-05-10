@@ -1,5 +1,5 @@
 import { $, PropFunction, Signal, component$ } from '@builder.io/qwik';
-import { Link, useNavigate } from '@builder.io/qwik-city';
+import { Link, useLocation, useNavigate } from '@builder.io/qwik-city';
 import { useCSSTransition } from 'qwik-transition';
 import { TRANSITION_CONFIGS } from '~/constants';
 
@@ -26,6 +26,7 @@ interface CartModalProps {
 export default component$(
 	({ isShowShoppingCart, onClickShoppingCart$, cartStore, totalItems }: CartModalProps) => {
 		const nav = useNavigate();
+		const loc = useLocation();
 		const { stage, shouldMount } = useCSSTransition(isShowShoppingCart, TRANSITION_CONFIGS);
 
 		const removeProduct = $((id: number) => {
@@ -197,7 +198,7 @@ export default component$(
 									No items found
 								</h4>
 								<Link
-									href="/shop"
+									href={`/${loc.params.lang}/shop`}
 									class="mt-3 inline-block bg-red-800 px-5 py-2 uppercase text-gray-100 transition-all duration-300 hover:bg-opacity-80"
 								>
 									Back to shop
