@@ -15,7 +15,7 @@ export default component$(({ activeSection }: Props) => {
 		}
 	});
 	return (
-		<section class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black">
+		<section id="flavors" class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black">
 			<div
 				class={`banner-bg absolute inset-0 scale-125 overflow-hidden bg-cover bg-fixed bg-center bg-no-repeat ${bannerTransition.value}`}
 			>
@@ -100,18 +100,16 @@ export default component$(({ activeSection }: Props) => {
 			<div class="over absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-8 text-center">
 				<div class="overflow-hidden">
 					<h2
-						id="flavors"
+						id="flavorsContent"
 						class={`hero-title section-content opacity-0 ${slideTransition.value}`}
-						x-intersect:leave="removeClass('slide-up');"
 					>
 						EXPERIENCE
 					</h2>
 				</div>
 				<p
-					id="flavors"
+					id="flavorsContent"
 					class={`section-content mx-auto mt-4 max-w-sm text-center text-lg text-white opacity-0 sm:text-2xl lg:max-w-xl ${slideTransition.value}`}
 					style="animation-delay: 400ms"
-					x-intersect:leave="removeClass('slide-up')"
 				>
 					Sixty-eight years of Bordeaux wine history live within our vines at Château Plaisance.
 					They give us the rich Merlots, sophisticated Cabernet Sauvignons and the powerful Cabernet

@@ -15,7 +15,10 @@ export default component$(({ activeSection }: Props) => {
 		}
 	});
 	return (
-		<section class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black">
+		<section
+			id="tradition"
+			class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black"
+		>
 			<div class={`banner-bg absolute inset-0 scale-125 ${bannerTransition.value}`}>
 				<picture>
 					<source
@@ -98,14 +101,14 @@ export default component$(({ activeSection }: Props) => {
 			<div class="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-8 text-center">
 				<div class="overflow-hidden">
 					<h2
-						id="tradition"
+						id="traditionContent"
 						class={`hero-title section-content opacity-0 ${slideTransition.value}`}
 					>
 						TRADITION
 					</h2>
 				</div>
 				<p
-					id="tradition"
+					id="traditionContent"
 					class={`section-content mx-auto mt-4 max-w-sm text-center text-lg text-white opacity-0 sm:text-2xl lg:max-w-xl ${slideTransition.value}`}
 					style="animation-delay: 400ms"
 				>

@@ -1,12 +1,73 @@
-import { component$ } from '@builder.io/qwik';
+import { $, component$, useSignal, useVisibleTask$ } from '@builder.io/qwik';
 
 export default component$(() => {
+	const current = useSignal('0');
+	const target = useSignal(0);
+	const ease = useSignal(0.2);
+	const sliderWidth = useSignal(0);
+	const itemWidth = useSignal(0);
+	const items = useSignal<Element[]>([]);
+	const rootRef = useSignal<HTMLElement>();
+	const sliderRef = useSignal<HTMLElement>();
+	const progressRef = useSignal<HTMLElement>();
+
+	const lerp$ = $((start: number, end: number, t: number): string => {
+		return `${start * (1 - t) + end * t}`;
+	});
+
+	const animate$ = $(async () => {
+		const lerpValue = await lerp$(Number(current.value), target.value, ease.value);
+
+		new Promise((resolve) => {
+			console.log('Test');
+			const rootEl = rootRef.value;
+			if (!rootEl) return;
+			const react = rootEl.getBoundingClientRect();
+
+			current.value = parseFloat(lerpValue).toFixed(2);
+
+			if (react.top < 0 && window.innerHeight < react.bottom) {
+				target.value = window.scrollY - rootEl.offsetTop;
+			}
+			if (sliderRef.value) {
+				sliderRef.value.style.transform = `translateX(-${current.value}px)`;
+			}
+			console.log('ke sini');
+			const winScroll = window.scrollY - react.bottom;
+			const scrolled = (winScroll / react.height) * 100;
+			if (progressRef.value) {
+				console.log('hey');
+				progressRef.value.style.width = scrolled + '%';
+				console.log(progressRef.value.style.width);
+			}
+			resolve(true);
+		});
+	});
+
+	const requestAnimation$ = $(() => {
+		animate$().then(() => {
+			requestAnimationFrame(animate$);
+		});
+	});
+
+	useVisibleTask$(() => {
+		if (!rootRef.value || !sliderRef.value) return;
+		items.value = [...rootRef.value.querySelectorAll('.slide-item')];
+		sliderWidth.value = sliderRef.value.getBoundingClientRect().width;
+		itemWidth.value = sliderWidth.value / items.value.length;
+		rootRef.value.style.height = `${
+			sliderWidth.value - (window.innerWidth - window.innerHeight)
+		}px`;
+		console.log('masuk1');
+		requestAnimation$();
+	});
+
 	return (
 		<section class="py-12">
 			<div class="hidden lg:block">
-				<div x-data="bottleSlider" class="relative w-full" x-ref="root">
+				<div class="relative w-full" ref={rootRef} onScroll$={requestAnimation$}>
 					<div class="sticky left-0 top-0 h-screen w-full overflow-x-hidden">
-						<div x-ref="slider" class="absolute left-0 top-0 h-full w-[4400px]">
+						<div ref={sliderRef} class="absolute left-0 top-0 h-full w-[4400px]">
 							<div class="absolute top-[15%] flex h-[60%] w-full justify-between 2xl:h-[70%]">
 								<div class="slide-item h-full w-[400px] shrink-0">
 									<a
@@ -254,7 +315,7 @@ export default component$(() => {
 								Scroll & Discover
 							</div>
 							<div class="mx-auto h-[1.5px] w-9/12 overflow-hidden bg-gray-500/50 lg:mx-0">
-								<div x-ref="progress" class="h-[1.5px] bg-white" style="width: 0%"></div>
+								<div ref={progressRef} class="h-[1.5px] bg-white" style="width: 0%"></div>
 							</div>
 						</div>
 					</div>

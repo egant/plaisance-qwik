@@ -1,9 +1,16 @@
 import { $, component$, useOnDocument, useSignal } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
+import { scrollAnchors } from '~/utils/scroll-anchors';
 import FlavorsSection from './flavors';
 import IdentitySection from './identity';
 import TraditionSection from './tradition';
 import WinInMixtureSection from './win-in-mixture';
+
+const ACTIVE_SECTION = new Map();
+ACTIVE_SECTION.set('winIsAMixtureContent', 'winIsAMixture');
+ACTIVE_SECTION.set('traditionContent', 'tradition');
+ACTIVE_SECTION.set('identityContent', 'identity');
+ACTIVE_SECTION.set('flavorsContent', 'flavors');
 
 export default component$(() => {
 	const activeSection = useSignal('winIsAMixture');
@@ -18,7 +25,7 @@ export default component$(() => {
 						if (entry.isIntersecting) {
 							banner?.classList.add('zoom-out');
 							sectionContent.forEach((element) => {
-								activeSection.value = element?.id || '';
+								activeSection.value = ACTIVE_SECTION.get(element.id) || '';
 								element.classList.add('slide-up');
 							});
 							return;
@@ -51,29 +58,33 @@ export default component$(() => {
 			<div class="sticky bottom-16 left-10 top-0 z-10 -mt-12 mb-0 w-20">
 				<div class="flex flex-col space-y-4">
 					<Link
+						id="winIsAMixtureBullet"
 						href="#winIsAMixture"
-						// @click.prevent="scrollAnchors($el)"
+						onClick$={() => scrollAnchors(document.getElementById('winIsAMixtureBullet'))}
 						class={`inline-block h-[5px] w-[5px] flex-none rounded-full transition duration-100 ${
 							activeSection.value === 'winIsAMixture' ? 'scale-150 bg-red-700' : 'bg-white'
 						}`}
 					></Link>
 					<Link
+						id="traditionBullet"
 						href="#tradition"
-						// @click.prevent="scrollAnchors($el)"
+						onClick$={() => scrollAnchors(document.getElementById('traditionBullet'))}
 						class={`inline-block h-[5px] w-[5px] flex-none rounded-full transition duration-100 ${
 							activeSection.value === 'tradition' ? 'scale-150 bg-red-700' : 'bg-white'
 						}`}
 					></Link>
 					<Link
+						id="identityBullet"
 						href="#identity"
-						// @click.prevent="scrollAnchors($el)"
+						onClick$={() => scrollAnchors(document.getElementById('identityBullet'))}
 						class={`inline-block h-[5px] w-[5px] flex-none rounded-full transition duration-100 ${
 							activeSection.value === 'identity' ? 'scale-150 bg-red-700' : 'bg-white'
 						}`}
 					></Link>
 					<Link
+						id="flavorsBullet"
 						href="#flavors"
-						// @click.prevent="scrollAnchors($el)"
+						onClick$={() => scrollAnchors(document.getElementById('flavorsBullet'))}
 						class={`inline-block h-[5px] w-[5px] flex-none rounded-full transition duration-100 ${
 							activeSection.value === 'flavors' ? 'scale-150 bg-red-700' : 'bg-white'
 						}`}

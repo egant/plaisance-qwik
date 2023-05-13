@@ -15,7 +15,10 @@ export default component$(({ activeSection }: Props) => {
 		}
 	});
 	return (
-		<section class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black">
+		<section
+			id="winIsAMixture"
+			class="relative h-screen w-screen max-w-[100vw] overflow-hidden bg-black"
+		>
 			<div class={`banner-bg absolute inset-0 h-screen scale-125 ${bannerTransition.value}`}>
 				<picture>
 					<source
@@ -95,7 +98,7 @@ export default component$(({ activeSection }: Props) => {
 			<div class="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-8">
 				<div class="overflow-hidden">
 					<h2
-						id="winIsAMixture"
+						id="winIsAMixtureContent"
 						class={`hero-title section-content opacity-0 ${slideTransition.value}`}
 						style="animation-delay: 200ms"
 					>
@@ -104,7 +107,7 @@ export default component$(({ activeSection }: Props) => {
 				</div>
 				<div class="mt-4 overflow-hidden">
 					<h2
-						id="winIsAMixture"
+						id="winIsAMixtureContent"
 						class={`hero-title section-content opacity-0 delay-200 ${slideTransition.value}`}
 						style="animation-delay: 400ms"
 					>
