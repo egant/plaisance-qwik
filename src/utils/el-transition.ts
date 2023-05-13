@@ -4,11 +4,13 @@ interface ElementHTML extends Element {
 export async function enter(element: Element | null, transitionName: string = '') {
 	if (!element) return;
 	element.classList.remove('hidden');
+	// @ts-ignore
 	await transition('enter', element, transitionName);
 }
 
 export async function leave(element: Element | null, transitionName: string = '') {
 	if (!element) return;
+	// @ts-ignore
 	await transition('leave', element, transitionName);
 	element.classList.add('hidden');
 }
