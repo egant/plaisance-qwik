@@ -1,4 +1,5 @@
 import { component$, useSignal, useVisibleTask$, type Signal } from '@builder.io/qwik';
+import { animateBall, handleMouseMove, handleMouseOut } from '~/utils/follow-mouse';
 
 interface AnimateProps {
 	rootRef: Signal<HTMLElement | undefined>;
@@ -14,7 +15,7 @@ export const lerp = (start: number, end: number, t: number): string => {
 	return `${start * (1 - t) + end * t}`;
 };
 
-export const animate = ({ rootRef, sliderRef, progressRef }: AnimateProps) => {
+export const animateSlider = ({ rootRef, sliderRef, progressRef }: AnimateProps) => {
 	const lerpValue = lerp(Number(current), target, ease);
 
 	const rootEl = rootRef.value;
@@ -36,7 +37,7 @@ export const animate = ({ rootRef, sliderRef, progressRef }: AnimateProps) => {
 	if (progressRef.value) {
 		progressRef.value.style.width = scrolled + '%';
 	}
-	const callAnimate = () => animate({ rootRef, sliderRef, progressRef });
+	const callAnimate = () => animateSlider({ rootRef, sliderRef, progressRef });
 	requestAnimationFrame(callAnimate);
 };
 
@@ -46,6 +47,12 @@ export default component$(() => {
 	const items = useSignal<Element[]>([]);
 	const rootRef = useSignal<HTMLElement>();
 	const sliderRef = useSignal<HTMLElement>();
+	const ballRef1 = useSignal<HTMLElement>();
+	const ballRef2 = useSignal<HTMLElement>();
+	const ballRef3 = useSignal<HTMLElement>();
+	const ballRef4 = useSignal<HTMLElement>();
+	const ballRef5 = useSignal<HTMLElement>();
+	const ballRef6 = useSignal<HTMLElement>();
 	const progressRef = useSignal<HTMLElement>();
 
 	useVisibleTask$(() => {
@@ -56,7 +63,7 @@ export default component$(() => {
 		rootRef.value.style.height = `${
 			sliderWidth.value - (window.innerWidth - window.innerHeight)
 		}px`;
-		animate({ rootRef, sliderRef, progressRef });
+		animateSlider({ rootRef, sliderRef, progressRef });
 	});
 
 	return (
@@ -69,7 +76,6 @@ export default component$(() => {
 								<div class="slide-item h-full w-[400px] shrink-0">
 									<a
 										href="/en/product/refined-granite-fish.html"
-										x-data="followMouse"
 										class="group relative block p-0 text-center brightness-75 transition duration-500 hover:brightness-100"
 									>
 										<picture>
@@ -90,12 +96,17 @@ export default component$(() => {
 										<div class="mt-2 text-lg text-red-700">$ 22.70 USD</div>
 										<div class="hidden md:block">
 											<div
-												x-ref="ball"
+												ref={ballRef1}
 												class="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 scale-0 items-center justify-center rounded-full bg-red-700/70 opacity-0 group-hover:scale-100 group-hover:opacity-100"
 											>
 												<span class="font-heading text-xl text-white">Buy</span>
 											</div>
-											<div class="absolute inset-0 z-10" x-ref="main"></div>
+											<div
+												class="absolute inset-0 z-10"
+												onMouseMove$={(e: any) => handleMouseMove({ ballRef: ballRef1, e })}
+												onMouseOut$={() => handleMouseOut({ ballRef: ballRef1 })}
+												onMouseEnter$={() => animateBall({ ballRef: ballRef1 })}
+											></div>
 										</div>
 										<div class="md:hidden">
 											<button class="mt-4 bg-red-700 px-4 py-2 font-semibold text-gray-300">
@@ -107,7 +118,6 @@ export default component$(() => {
 								<div class="slide-item h-full w-[400px] shrink-0">
 									<a
 										href="/en/product/refined-granite-fish.html"
-										x-data="followMouse"
 										class="group relative block p-0 text-center brightness-75 transition duration-500 hover:brightness-100"
 									>
 										<picture>
@@ -126,12 +136,17 @@ export default component$(() => {
 										<div class="mt-2 text-lg text-red-700">$ 18.54 USD</div>
 										<div class="hidden md:block">
 											<div
-												x-ref="ball"
+												ref={ballRef2}
 												class="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 scale-0 items-center justify-center rounded-full bg-red-700/70 opacity-0 group-hover:scale-100 group-hover:opacity-100"
 											>
 												<span class="font-heading text-xl text-white">Buy</span>
 											</div>
-											<div class="absolute inset-0 z-10" x-ref="main"></div>
+											<div
+												class="absolute inset-0 z-10"
+												onMouseMove$={(e: any) => handleMouseMove({ ballRef: ballRef2, e })}
+												onMouseOut$={() => handleMouseOut({ ballRef: ballRef2 })}
+												onMouseEnter$={() => animateBall({ ballRef: ballRef2 })}
+											></div>
 										</div>
 										<div class="md:hidden">
 											<button class="mt-4 bg-red-700 px-4 py-2 font-semibold text-gray-300">
@@ -143,7 +158,6 @@ export default component$(() => {
 								<div class="slide-item h-full w-[400px] shrink-0">
 									<a
 										href="/en/product/refined-granite-fish.html"
-										x-data="followMouse"
 										class="group relative block p-0 text-center brightness-75 transition duration-500 hover:brightness-100"
 									>
 										<picture>
@@ -162,12 +176,17 @@ export default component$(() => {
 										<div class="mt-2 text-lg text-red-700">$ 32.59 USD</div>
 										<div class="hidden md:block">
 											<div
-												x-ref="ball"
+												ref={ballRef3}
 												class="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 scale-0 items-center justify-center rounded-full bg-red-700/70 opacity-0 group-hover:scale-100 group-hover:opacity-100"
 											>
 												<span class="font-heading text-xl text-white">Buy</span>
 											</div>
-											<div class="absolute inset-0 z-10" x-ref="main"></div>
+											<div
+												class="absolute inset-0 z-10"
+												onMouseMove$={(e: any) => handleMouseMove({ ballRef: ballRef3, e })}
+												onMouseOut$={() => handleMouseOut({ ballRef: ballRef3 })}
+												onMouseEnter$={() => animateBall({ ballRef: ballRef3 })}
+											></div>
 										</div>
 										<div class="md:hidden">
 											<button class="mt-4 bg-red-700 px-4 py-2 font-semibold text-gray-300">
@@ -179,7 +198,6 @@ export default component$(() => {
 								<div class="slide-item h-full w-[400px] shrink-0">
 									<a
 										href="/en/product/refined-granite-fish.html"
-										x-data="followMouse"
 										class="group relative block p-0 text-center brightness-75 transition duration-500 hover:brightness-100"
 									>
 										<picture>
@@ -198,12 +216,17 @@ export default component$(() => {
 										<div class="mt-2 text-lg text-red-700">$ 49.92 USD</div>
 										<div class="hidden md:block">
 											<div
-												x-ref="ball"
+												ref={ballRef4}
 												class="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 scale-0 items-center justify-center rounded-full bg-red-700/70 opacity-0 group-hover:scale-100 group-hover:opacity-100"
 											>
 												<span class="font-heading text-xl text-white">Buy</span>
 											</div>
-											<div class="absolute inset-0 z-10" x-ref="main"></div>
+											<div
+												class="absolute inset-0 z-10"
+												onMouseMove$={(e: any) => handleMouseMove({ ballRef: ballRef4, e })}
+												onMouseOut$={() => handleMouseOut({ ballRef: ballRef4 })}
+												onMouseEnter$={() => animateBall({ ballRef: ballRef4 })}
+											></div>
 										</div>
 										<div class="md:hidden">
 											<button class="mt-4 bg-red-700 px-4 py-2 font-semibold text-gray-300">
@@ -215,7 +238,6 @@ export default component$(() => {
 								<div class="slide-item h-full w-[400px] shrink-0">
 									<a
 										href="/en/product/refined-granite-fish.html"
-										x-data="followMouse"
 										class="group relative block p-0 text-center brightness-75 transition duration-500 hover:brightness-100"
 									>
 										<picture>
@@ -236,12 +258,17 @@ export default component$(() => {
 										<div class="mt-2 text-lg text-red-700">$ 22.70 USD</div>
 										<div class="hidden md:block">
 											<div
-												x-ref="ball"
+												ref={ballRef5}
 												class="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 scale-0 items-center justify-center rounded-full bg-red-700/70 opacity-0 group-hover:scale-100 group-hover:opacity-100"
 											>
 												<span class="font-heading text-xl text-white">Buy</span>
 											</div>
-											<div class="absolute inset-0 z-10" x-ref="main"></div>
+											<div
+												class="absolute inset-0 z-10"
+												onMouseMove$={(e: any) => handleMouseMove({ ballRef: ballRef5, e })}
+												onMouseOut$={() => handleMouseOut({ ballRef: ballRef5 })}
+												onMouseEnter$={() => animateBall({ ballRef: ballRef5 })}
+											></div>
 										</div>
 										<div class="md:hidden">
 											<button class="mt-4 bg-red-700 px-4 py-2 font-semibold text-gray-300">
@@ -253,7 +280,6 @@ export default component$(() => {
 								<div class="slide-item h-full w-[400px] shrink-0">
 									<a
 										href="/en/product/refined-granite-fish.html"
-										x-data="followMouse"
 										class="group relative block p-0 text-center brightness-75 transition duration-500 hover:brightness-100"
 									>
 										<picture>
@@ -274,12 +300,17 @@ export default component$(() => {
 										<div class="mt-2 text-lg text-red-700">$ 92.28 USD</div>
 										<div class="hidden md:block">
 											<div
-												x-ref="ball"
+												ref={ballRef6}
 												class="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 scale-0 items-center justify-center rounded-full bg-red-700/70 opacity-0 group-hover:scale-100 group-hover:opacity-100"
 											>
 												<span class="font-heading text-xl text-white">Buy</span>
 											</div>
-											<div class="absolute inset-0 z-10" x-ref="main"></div>
+											<div
+												class="absolute inset-0 z-10"
+												onMouseMove$={(e: any) => handleMouseMove({ ballRef: ballRef6, e })}
+												onMouseOut$={() => handleMouseOut({ ballRef: ballRef6 })}
+												onMouseEnter$={() => animateBall({ ballRef: ballRef6 })}
+											></div>
 										</div>
 										<div class="md:hidden">
 											<button class="mt-4 bg-red-700 px-4 py-2 font-semibold text-gray-300">
@@ -362,7 +393,6 @@ export default component$(() => {
 					</a>
 					<a
 						href="/en/product/refined-granite-fish.html"
-						x-data="followMouse"
 						class="group relative block p-0 text-center brightness-75 transition duration-500 hover:brightness-100"
 					>
 						<picture>
@@ -403,7 +433,6 @@ export default component$(() => {
 					</a>
 					<a
 						href="/en/product/refined-granite-fish.html"
-						x-data="followMouse"
 						class="group relative block p-0 text-center brightness-75 transition duration-500 hover:brightness-100"
 					>
 						<picture>

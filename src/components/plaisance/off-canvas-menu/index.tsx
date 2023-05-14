@@ -1,7 +1,9 @@
-import { Signal, component$, useTask$ } from '@builder.io/qwik';
+import { Signal, component$, useSignal, useTask$ } from '@builder.io/qwik';
 import { Link, useLocation } from '@builder.io/qwik-city';
 import { isServer } from '@builder.io/qwik/build';
 import { enter, leave } from '~/utils/el-transition';
+import { animateBall, handleMouseMove, handleMouseOut } from '~/utils/follow-mouse';
+
 interface OverlayNavProps {
 	isShowMenu: Signal<boolean>;
 }
@@ -25,6 +27,9 @@ const STAGE_CONTENT_TRANSITION = {
 
 export default component$(({ isShowMenu }: OverlayNavProps) => {
 	const loc = useLocation();
+	const ballRef1 = useSignal<HTMLElement>();
+	const ballRef2 = useSignal<HTMLElement>();
+	const ballRef3 = useSignal<HTMLElement>();
 	useTask$(({ track }) => {
 		track(() => isShowMenu.value);
 		if (isServer) return;
@@ -92,6 +97,7 @@ export default component$(({ isShowMenu }: OverlayNavProps) => {
 											src="/img/menu/about_640.jpg"
 											class="absolute left-1/2 top-1/2 w-28 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100 md:w-40 lg:w-52"
 											alt="About"
+											ref={ballRef1}
 											loading="lazy"
 											decoding="async"
 										/>
@@ -107,7 +113,12 @@ export default component$(({ isShowMenu }: OverlayNavProps) => {
 											About
 										</h2>
 									</div>
-									<div class="absolute inset-0 z-10"></div>
+									<div
+										class="absolute inset-0 z-10"
+										onMouseMove$={(e: any) => handleMouseMove({ ballRef: ballRef1, e })}
+										onMouseOut$={() => handleMouseOut({ ballRef: ballRef1 })}
+										onMouseEnter$={() => animateBall({ ballRef: ballRef1 })}
+									></div>
 								</Link>
 							</div>
 							<div>
@@ -121,6 +132,7 @@ export default component$(({ isShowMenu }: OverlayNavProps) => {
 											src="/img/menu/news_640.jpg"
 											class="absolute left-1/2 top-1/2 w-28 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100 md:w-40 lg:w-52"
 											alt="News"
+											ref={ballRef2}
 											loading="lazy"
 											decoding="async"
 										/>
@@ -135,7 +147,12 @@ export default component$(({ isShowMenu }: OverlayNavProps) => {
 											News
 										</h2>
 									</div>
-									<div class="absolute inset-0 z-10"></div>
+									<div
+										class="absolute inset-0 z-10"
+										onMouseMove$={(e: any) => handleMouseMove({ ballRef: ballRef2, e })}
+										onMouseOut$={() => handleMouseOut({ ballRef: ballRef2 })}
+										onMouseEnter$={() => animateBall({ ballRef: ballRef2 })}
+									></div>
 								</Link>
 							</div>
 							<div>
@@ -149,6 +166,7 @@ export default component$(({ isShowMenu }: OverlayNavProps) => {
 											src="/img/menu/shop_640.jpg"
 											class="absolute left-1/2 top-1/2 w-28 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100 md:w-40 lg:w-52"
 											alt="Shop"
+											ref={ballRef3}
 											loading="lazy"
 											decoding="async"
 										/>
@@ -163,7 +181,12 @@ export default component$(({ isShowMenu }: OverlayNavProps) => {
 											Shop
 										</h2>
 									</div>
-									<div class="absolute inset-0 z-10"></div>
+									<div
+										class="absolute inset-0 z-10"
+										onMouseMove$={(e: any) => handleMouseMove({ ballRef: ballRef3, e })}
+										onMouseOut$={() => handleMouseOut({ ballRef: ballRef3 })}
+										onMouseEnter$={() => animateBall({ ballRef: ballRef3 })}
+									></div>
 								</Link>
 							</div>
 						</div>
