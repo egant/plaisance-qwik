@@ -6,7 +6,6 @@ import {
 	useTask$,
 	type QwikKeyboardEvent,
 } from '@builder.io/qwik';
-// @ts-ignore
 import Rolldate from 'rolldate';
 import { useTrapFocus } from '~/hooks/use-trap-focus';
 import { enter, leave } from '~/utils/el-transition';
