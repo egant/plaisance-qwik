@@ -82,7 +82,9 @@ export default component$(
 			<>
 				<div
 					onClick$={onClickShoppingCart$}
-					class="fixed inset-0 z-30 bg-black/25 transition-opacity"
+					class={`fixed inset-0 z-30 bg-black/25 transition-opacity ${
+						isShowShoppingCart.value ? '' : 'hidden'
+					}`}
 				></div>
 				<div
 					{...CART_TRANSITION}
