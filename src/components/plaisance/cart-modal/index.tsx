@@ -1,7 +1,7 @@
-import { $, PropFunction, Signal, component$ } from '@builder.io/qwik';
+import { $, PropFunction, Signal, component$, useTask$ } from '@builder.io/qwik';
 import { Link, useLocation, useNavigate } from '@builder.io/qwik-city';
-import { useCSSTransition } from 'qwik-transition';
-import { TRANSITION_CONFIGS } from '~/constants';
+import { isServer } from '@builder.io/qwik/build';
+import { enter, leave } from '~/utils/el-transition';
 
 export interface Product {
 	id: number;
@@ -23,11 +23,28 @@ interface CartModalProps {
 	cartStore: CartStore;
 }
 
+const CART_TRANSITION = {
+	'data-transition-enter-start': 'opacity-0 translate-x-10',
+	'data-transition-enter-end': 'opacity-100 translate-x-0',
+	'data-transition-leave-start': 'opacity-100 translate-x-0',
+	'data-transition-leave-end': 'opacity-0 translate-x-10',
+};
+
 export default component$(
 	({ isShowShoppingCart, onClickShoppingCart$, cartStore, totalItems }: CartModalProps) => {
 		const nav = useNavigate();
 		const loc = useLocation();
-		const { stage, shouldMount } = useCSSTransition(isShowShoppingCart, TRANSITION_CONFIGS);
+
+		useTask$(({ track }) => {
+			const isShowCart = track(() => isShowShoppingCart.value);
+			if (isServer) return;
+			const elementCartModal = document.querySelector('#cart-modal');
+			if (isShowCart) {
+				enter(elementCartModal);
+			} else {
+				leave(elementCartModal);
+			}
+		});
 
 		const removeProduct = $((id: number) => {
 			const item = cartStore.products.find((i: Product) => i.id === id);
@@ -61,7 +78,6 @@ export default component$(
 			return total.toFixed(2);
 		};
 
-		if (!shouldMount.value) return null;
 		return (
 			<>
 				<div
@@ -69,19 +85,10 @@ export default component$(
 					class="fixed inset-0 z-30 bg-black/25 transition-opacity"
 				></div>
 				<div
-					class={`fixed inset-y-0 right-0 z-40 flex h-full w-full max-w-xs flex-col
-          bg-white transition duration-200 ease-in-out xs:max-w-md md:max-w-[465px]
-          ${
-						stage.value === 'enterFrom'
-							? 'translate-x-10  opacity-0'
-							: stage.value === 'enterTo'
-							? 'translate-x-0 opacity-100'
-							: stage.value === 'leaveFrom'
-							? 'translate-x-0 opacity-100'
-							: stage.value === 'leaveTo'
-							? 'translate-x-10  opacity-0'
-							: ''
-					}`}
+					{...CART_TRANSITION}
+					id="cart-modal"
+					class={`fixed inset-y-0 right-0 z-40 flex hidden h-full w-full max-w-xs
+          flex-col bg-white transition duration-200 ease-in-out xs:max-w-md md:max-w-[465px]`}
 				>
 					<div class="flex items-center justify-between border-b border-gray-200 p-4 lg:p-6">
 						<a href="/">
