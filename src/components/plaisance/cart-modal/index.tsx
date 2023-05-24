@@ -216,7 +216,6 @@ export default component$(
 						)}
 					</div>
 				</div>
-				)
 			</>
 		);
 	}
