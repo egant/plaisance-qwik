@@ -16,8 +16,13 @@ import { getCollections } from '~/providers/collections/collections';
 import { getActiveOrderQuery } from '~/providers/orders/order';
 import { ActiveCustomer, AppState } from '~/types';
 import { extractLang } from '~/utils/i18n';
+import Cart from '../components/cart/Cart';
 import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
+
+export const onGet: RequestHandler = async ({ cacheControl }) => {
+	cacheControl({ staleWhileRevalidate: 60 * 60 * 24 * 7, maxAge: 5 });
+};
 
 export const useCollectionsLoader = routeLoader$(async () => {
 	return await getCollections();
@@ -84,6 +89,7 @@ export default component$(() => {
 	return (
 		<div>
 			<Header />
+			<Cart />
 			<main>
 				<Slot />
 			</main>

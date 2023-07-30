@@ -18,19 +18,19 @@ export default component$<Props>(({ appState }) => {
 
 	useTask$(async () => {
 		state.methods = await getEligibleShippingMethodsQuery();
-		state.selectedMethodId = state.methods[0].id;
+		state.selectedMethodId = state.methods[0]?.id;
 	});
 
 	useTask$(async (tracker) => {
 		const selected = tracker.track(() => state.selectedMethodId);
 		if (selected) {
-			appState.activeOrder = await setOrderShippingMethodMutation(selected);
+			appState.activeOrder = await setOrderShippingMethodMutation([selected]);
 		}
 	});
 
 	return (
 		<div>
-			<label class="text-lg font-medium text-gray-900">Delivery method</label>
+			<label class="text-lg font-medium text-gray-900">{$localize`Delivery method`}</label>
 			<div class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
 				{state.methods.map((method, index) => (
 					<div
